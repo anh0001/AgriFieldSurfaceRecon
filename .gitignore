@@ -1,3 +1,14 @@
+/out
+/data
+build
+.vscode
+.pytest_cache
+.cache
+
+/src/utils/libmcubes/mcubes.cpp
+/src/utils/libsimplify/simplify_mesh.cpp
+/src/utils/libsimplify/build
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
