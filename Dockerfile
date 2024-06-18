@@ -16,6 +16,8 @@ RUN apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/r
     libxext6 \
     libsm6 \
     libxrender1 \
+    g++ \
+    ninja-build \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

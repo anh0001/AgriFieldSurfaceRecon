@@ -14,8 +14,21 @@ If you find our code or paper useful, please consider citing
 ```
 
 ## Installation
-First you have to make sure that you have all dependencies in place.
-The simplest way to do so, is to use [anaconda](https://www.anaconda.com/). 
+You can also set up the environment using Docker. Follow these steps:
+
+Build the Docker Image
+Run the following command in the root directory of the cloned repository (where the Dockerfile is located):
+
+```
+docker build -t conv_occ_net:cuda11.8 .
+```
+
+Run the Docker Container
+To run the Docker container with GPU support, use the following command:
+
+```
+docker run --gpus all -it --rm -v $(pwd):/workspace conv_occ_net:cuda11.8
+```
 
 You can create an anaconda environment called `conv_onet` using
 ```
