@@ -30,14 +30,12 @@ To run the Docker container with GPU support, use the following command:
 docker run --gpus all -it --rm -v $(pwd):/workspace conv_occ_net:cuda11.8
 ```
 
-### create an anaconda environment called `conv_onet` using
+### Create an anaconda environment called `conv_onet` using
 ```
-conda env create -f environment.yaml
 conda activate conv_onet
 ```
 
-Next, compile the extension modules.
-You can do this via
+### Compile the extension modules.
 ```
 python setup.py build_ext --inplace
 ```
