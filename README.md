@@ -27,7 +27,7 @@ docker build -t conv_occ_net:cuda11.8 .
 To run the Docker container with GPU support, use the following command:
 
 ```
-docker run --gpus all -it --rm -v $(pwd):/workspace conv_occ_net:cuda11.8
+docker run --gpus all -it --rm --dns 8.8.8.8 --dns 8.8.4.4 -v $(pwd):/workspace conv_occ_net:cuda11.8
 ```
 
 ### Create an anaconda environment called `conv_onet` using
