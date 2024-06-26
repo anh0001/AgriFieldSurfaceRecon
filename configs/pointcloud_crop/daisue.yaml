@@ -2,7 +2,7 @@ inherit_from: configs/pointcloud_crop/room_grid64.yaml
 data:
   input_type: pointcloud_crop
   classes: ['']
-  path: data/daisue
+  path: data/daisue/processed
   pointcloud_n: 200000
   pointcloud_noise: 0.0
   pointcloud_file: pointcloud.npz
