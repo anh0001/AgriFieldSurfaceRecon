@@ -15,13 +15,14 @@ def load_input_npz(file_path):
     points = data['points']
     return points
 
+def scale_points(points, scale_factor):
+    """Scale the points by a certain scale factor."""
+    return points * scale_factor
+
 def compute_normals(points):
     """Compute normals for a point cloud."""
-    # Create a Trimesh object from points
     cloud = trimesh.points.PointCloud(points)
-    # Create a convex hull from the point cloud
     hull = cloud.convex_hull
-    # Sample points from the hull to get normals
     sampled_points, face_idx = hull.sample(len(points), return_index=True)
     normals = hull.face_normals[face_idx]
     return normals
@@ -51,12 +52,16 @@ create_dir(OUTFILE)
 # Parameters
 N_POINTCLOUD_POINTS = 400000
 DTYPE = np.float16
+SCALE_FACTOR = 0.1  # Scale factor to be applied to the points
 
 # Load input .npz file
 points = load_input_npz(INPUT_NPZ)
 
+# Scale points
+scaled_points = scale_points(points, SCALE_FACTOR)
+
 # Sample points
-sampled_points = sample_points(points, N_POINTCLOUD_POINTS)
+sampled_points = sample_points(scaled_points, N_POINTCLOUD_POINTS)
 
 # Compute normals
 normals = compute_normals(sampled_points)
