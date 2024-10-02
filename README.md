@@ -34,7 +34,7 @@ python setup.py build_ext --inplace
 To process your raw data by sampling and creating normal vectors, run the following bash script:
 
 ```bash
-bash scripts/dataset_daisue/run_build_dataset.sh
+bash scripts/dataset_daisue/run_build_dataset.sh --num_points 2000000 --scale_factor 0.5
 ```
 
 After running the script, a new `.npz` file with the normals vector calculated will be generated. You can check the code in `scripts/dataset_daisue/build_dataset.py` for more details.

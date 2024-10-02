@@ -1,4 +1,21 @@
+"""
+Build Dataset Script
+
+This script processes raw point cloud data by sampling points and creating normal vectors.
+It loads a raw .npz file, scales the points, samples a specified number of points,
+computes normals, and saves the processed data in both .npz and .ply formats.
+
+Usage:
+    python build_dataset.py [--num_points NUM_POINTS] [--scale_factor SCALE_FACTOR]
+
+    --num_points: Number of points to sample (default: 400000)
+    --scale_factor: Scale factor to apply to the points (default: 0.1)
+
+After running this script, a new .npz file with the calculated normal vectors will be generated.
+"""
+
 import os
+import argparse
 from os.path import join, exists
 import numpy as np
 import trimesh
@@ -41,35 +58,43 @@ def save_output_npz(file_path, points, normals):
     """Save points and normals to an output .npz file."""
     np.savez(file_path, points=points, normals=normals)
 
-# Constants and Paths
-OUT_PATH = 'data/daisue/processed'
-SCENE_NAME = 'area_0'
-OUTFILE = join(OUT_PATH, SCENE_NAME)
-INPUT_NPZ = 'data/daisue/raw/pointcloud.npz'  # Replace with actual input .npz file path
+def main(num_points, scale_factor):
+    # Constants and Paths
+    OUT_PATH = 'data/daisue/processed'
+    SCENE_NAME = 'area_0'
+    OUTFILE = join(OUT_PATH, SCENE_NAME)
+    INPUT_NPZ = 'data/daisue/raw/pointcloud.npz'  # Replace with actual input .npz file path
 
-create_dir(OUTFILE)
+    create_dir(OUTFILE)
 
-# Parameters
-N_POINTCLOUD_POINTS = 400000
-DTYPE = np.float16
-SCALE_FACTOR = 0.1  # Scale factor to be applied to the points
+    # Parameters
+    DTYPE = np.float16
 
-# Load input .npz file
-points = load_input_npz(INPUT_NPZ)
+    # Load input .npz file
+    points = load_input_npz(INPUT_NPZ)
 
-# Scale points
-scaled_points = scale_points(points, SCALE_FACTOR)
+    # Scale points
+    scaled_points = scale_points(points, scale_factor)
 
-# Sample points
-sampled_points = sample_points(scaled_points, N_POINTCLOUD_POINTS)
+    # Sample points
+    sampled_points = sample_points(scaled_points, num_points)
 
-# Compute normals
-normals = compute_normals(sampled_points)
+    # Compute normals
+    normals = compute_normals(sampled_points)
 
-# Save surface points
-save_output_npz(join(OUTFILE, 'pointcloud.npz'), sampled_points.astype(DTYPE), normals.astype(DTYPE))
-export_pointcloud(sampled_points, join(OUTFILE, 'pointcloud.ply'))
+    # Save surface points
+    save_output_npz(join(OUTFILE, 'pointcloud.npz'), sampled_points.astype(DTYPE), normals.astype(DTYPE))
+    export_pointcloud(sampled_points, join(OUTFILE, 'pointcloud.ply'))
 
-# Create test.lst file
-with open(join(OUT_PATH, 'test.lst'), "w") as file:
-    file.write(SCENE_NAME)
+    # Create test.lst file
+    with open(join(OUT_PATH, 'test.lst'), "w") as file:
+        file.write(SCENE_NAME)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Process point cloud data.")
+    parser.add_argument("--num_points", type=int, default=400000, help="Number of points to sample")
+    parser.add_argument("--scale_factor", type=float, default=0.1, help="Scale factor to apply to the points")
+    
+    args = parser.parse_args()
+    
+    main(args.num_points, args.scale_factor)
